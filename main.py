@@ -102,7 +102,7 @@ def generate_pytorch_code(nodes, edges):
 tab1, tab2 = st.tabs(["LeNet Builder", "About"])
 
 with tab1:
-    st.title("Build a LeNet Visually")
+    st.title("Build a LeNet!")
     st.header("What is LeNet?")
     st.write("""
     LeNet is one of the earliest convolutional neural networks (CNNs), designed by Yann LeCun and his colleagues in the 1990s.
