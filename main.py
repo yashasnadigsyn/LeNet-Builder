@@ -99,7 +99,7 @@ def generate_pytorch_code(nodes, edges):
     code += "        return x\n"
     return code
 
-tab1, tab2 = st.tabs(["LeNet Builder", "About"])
+tab1, tab2, tab3 = st.tabs(["LeNet Builder", "How-to", "About"])
 
 with tab1:
     st.title("Build a LeNet Visually")
@@ -230,6 +230,11 @@ with tab1:
     st.code(pytorch_code, language='python')
 
 with tab2:
+    st.header("What is this tool?")
+
+
+
+with tab3:
     st.header("About")
     st.write("""
     Hi! I'm **Yashas**, a student of Machine Learning @ Ramaiah University of Applied Sciences.
