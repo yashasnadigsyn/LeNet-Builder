@@ -8,7 +8,6 @@ from uuid import uuid4
 # Set page config
 st.set_page_config(page_title="LeNet Builder")
 
-# Function to generate PyTorch code from the flow diagram
 def generate_pytorch_code(nodes, edges):
     node_map = {node.id: node for node in nodes}
 
@@ -23,7 +22,7 @@ def generate_pytorch_code(nodes, edges):
 
     current_node = start_node
     layer_count = 1
-    layer_names = {}  # Store layer names for forward pass
+    layer_names = {}
     while current_node:
         if current_node.data['content'] == 'Image':
             pass
@@ -32,7 +31,7 @@ def generate_pytorch_code(nodes, edges):
             kernel_size = int(current_node.data['content'].split('\n')[2].split(': ')[1].split('x')[0])
             stride = int(current_node.data['content'].split('\n')[3].split(': ')[1])
             code += f"        self.conv{layer_count} = nn.Conv2d(in_channels=1, out_channels={filters}, kernel_size={kernel_size}, stride={stride})\n"
-            code += f"        self.sigmoid{layer_count} = nn.Sigmoid()\n"  # Add Sigmoid activation
+            code += f"        self.sigmoid{layer_count} = nn.Sigmoid()\n"
             layer_names[current_node.id] = f"conv{layer_count}"
             layer_count += 1
         elif current_node.data['content'].startswith('Pool'):
@@ -48,7 +47,7 @@ def generate_pytorch_code(nodes, edges):
         elif current_node.data['content'].startswith('Dense'):
             units = int(current_node.data['content'].split('\n')[1].split(': ')[1])
             code += f"        self.fc{layer_count} = nn.Linear(in_features=120, out_features={units})\n"
-            code += f"        self.sigmoid{layer_count} = nn.Sigmoid()\n"  # Add Sigmoid activation
+            code += f"        self.sigmoid{layer_count} = nn.Sigmoid()\n"
             layer_names[current_node.id] = f"fc{layer_count}"
             layer_count += 1
 
@@ -67,14 +66,14 @@ def generate_pytorch_code(nodes, edges):
             layer_name = layer_names[current_node.id]
             if layer_name.startswith("conv"):
                 code += f"        x = self.{layer_name}(x)\n"
-                code += f"        x = self.sigmoid{layer_name[4:]}(x)\n"  # Apply Sigmoid activation
+                code += f"        x = self.sigmoid{layer_name[4:]}(x)\n"
             elif layer_name.startswith("pool"):
                 code += f"        x = self.{layer_name}(x)\n"
             elif layer_name.startswith("flatten"):
                 code += f"        x = self.{layer_name}(x)\n"
             elif layer_name.startswith("fc"):
                 code += f"        x = self.{layer_name}(x)\n"
-                code += f"        x = self.sigmoid{layer_name[2:]}(x)\n"  # Apply Sigmoid activation
+                code += f"        x = self.sigmoid{layer_name[2:]}(x)\n"
 
         next_edge = next((edge for edge in edges if edge.source == current_node.id), None)
         if next_edge:
@@ -85,7 +84,6 @@ def generate_pytorch_code(nodes, edges):
     code += "        return x\n"
     return code
 
-# Initialize session state for the flow diagram
 if 'curr_state' not in st.session_state:
     nodes = [
         StreamlitFlowNode("Image", (0, 0), {'content': 'Image'}, node_type='input', source_position='right', draggable=True, style={'backgroundColor': '#FFCCCB'}),
@@ -94,7 +92,6 @@ if 'curr_state' not in st.session_state:
     edges = []
     st.session_state.curr_state = StreamlitFlowState(nodes, edges)
 
-# Sidebar
 with st.sidebar:
     st.header("LeNet Builder")
 
@@ -222,5 +219,5 @@ st.session_state.curr_state = streamlit_flow(
 # Display the generated PyTorch code
 st.subheader("Generated PyTorch Code")
 pytorch_code = generate_pytorch_code(st.session_state.curr_state.nodes, st.session_state.curr_state.edges)
-st.session_state.pytorch_code = pytorch_code  # Store the code in session state for the Train page
+st.session_state.pytorch_code = pytorch_code
 st.code(pytorch_code, language='python')

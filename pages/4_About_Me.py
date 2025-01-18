@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.header("About")
+st.header("LeNet Builder: About")
 st.write("""
 Hi! I'm **Yashas**, a student of Machine Learning @ Ramaiah University of Applied Sciences.
 

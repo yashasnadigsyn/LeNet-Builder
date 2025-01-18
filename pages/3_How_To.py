@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.set_page_config(page_title="LeNet Builder: How To")
+
 st.header("How to Use the LeNet Builder Tool?")
 st.write("""
 Add Layers:
