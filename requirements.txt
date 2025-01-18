@@ -96,9 +96,9 @@ streamlit-flow-component==1.5.0
 sympy==1.13.1
 tenacity==9.0.0
 toml==0.10.2
-torch==2.5.1+cpu
-torchaudio==2.5.1+cpu
-torchvision==0.20.1+cpu
+torch==2.5.1
+torchaudio==2.5.1
+torchvision==0.20.1
 tornado==6.4.2
 typing_extensions==4.12.2
 tzdata==2024.2
